@@ -7,12 +7,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: linear-gradient(135deg, #fff9f0 0%, #fff0fb 50%, #f0f4ff 100%);
-    font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
-    padding: 32px 20px 60px;
-  }
+  body { background: linear-gradient(135deg, #fff9f0 0%, #fff0fb 50%, #f0f4ff 100%); font-family: 'Nunito', sans-serif; min-height: 100vh; padding: 32px 20px 60px; }
   .container { max-width: 700px; margin: 0 auto; }
   .header { text-align: center; margin-bottom: 36px; }
   .header-emoji { font-size: 64px; display: block; margin-bottom: 12px; animation: bounce 2s infinite; }
@@ -20,6 +15,7 @@
   .header h1 { font-size: 32px; font-weight: 900; color: #2d2d2d; margin-bottom: 8px; }
   .header h1 span { color: #ff6b9d; }
   .header p { font-size: 16px; color: #888; font-weight: 600; }
+
   .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
   .step { display: flex; align-items: center; gap: 6px; background: white; border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
   .step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: white; }
@@ -27,13 +23,16 @@
   .step:nth-child(2) .step-num { background: #ffa35c; }
   .step:nth-child(3) .step-num { background: #7c6fef; }
   .step:nth-child(4) .step-num { background: #4ecdc4; }
+  .step:nth-child(5) .step-num { background: #f5a623; }
+
   .card { background: white; border-radius: 24px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
   .card-title { font-size: 16px; font-weight: 800; color: #2d2d2d; margin-bottom: 20px; }
+
   .hotel-field input { width: 100%; border: 2.5px solid #ffe0ee; border-radius: 14px; padding: 14px 18px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: #2d2d2d; outline: none; transition: border-color 0.2s; background: #fff9fb; }
   .hotel-field input:focus { border-color: #ff6b9d; background: white; }
   .hotel-field input::placeholder { color: #ccc; font-weight: 600; }
   .name-preview { margin-top: 10px; background: #fff0f7; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700; color: #ff6b9d; }
-  .name-preview span { color: #aaa; font-weight: 600; }
+
   .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .size-field label { display: block; font-size: 13px; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
   .size-field input { width: 100%; border: 2.5px solid #e8e8ff; border-radius: 14px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #7c6fef; outline: none; transition: border-color 0.2s; background: #f8f7ff; text-align: center; }
@@ -41,28 +40,97 @@
   .preset-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .preset-btn { background: linear-gradient(135deg, #f8f7ff, #fff0fb); border: 2px solid #e0dcff; color: #7c6fef; padding: 8px 14px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.15s; }
   .preset-btn:hover { background: #7c6fef; color: white; border-color: #7c6fef; transform: translateY(-2px); }
-  .quality-select { width: 100%; border: 2.5px solid #d5f5f3; border-radius: 14px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; color: #2d2d2d; outline: none; background: #f0fffe; cursor: pointer; }
+
   .dropzone { border: 3px dashed #ffd6e8; border-radius: 20px; padding: 50px 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: linear-gradient(135deg, #fff9fb, #fff5ff); position: relative; }
   .dropzone:hover, .dropzone.drag-over { border-color: #ff6b9d; background: #fff0f7; transform: scale(1.01); }
   .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .drop-emoji { font-size: 52px; display: block; margin-bottom: 14px; }
   .drop-title { font-size: 20px; font-weight: 900; color: #2d2d2d; margin-bottom: 8px; }
   .drop-sub { font-size: 14px; color: #bbb; font-weight: 600; }
-  .preview-section { margin-bottom: 20px; display: none; }
-  .preview-section.visible { display: block; }
-  .section-label { font-size: 14px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
-  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
-  .preview-card { background: white; border: 2px solid #f0f0f0; border-radius: 16px; overflow: hidden; position: relative; transition: transform 0.2s; }
-  .preview-card:hover { transform: translateY(-3px); }
-  .preview-card img { width: 100%; height: 100px; object-fit: cover; display: block; }
-  .preview-card-info { padding: 8px 10px; }
-  .preview-card-name { font-size: 11px; color: #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
-  .preview-card-size { font-size: 10px; color: #ccc; margin-top: 2px; font-weight: 600; }
-  .remove-btn { position: absolute; top: 6px; right: 6px; background: #ff6b9d; border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+
+  /* REORDER SECTION */
+  .reorder-section { display: none; margin-bottom: 20px; }
+  .reorder-section.visible { display: block; }
+
+  .reorder-card { background: white; border-radius: 24px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+
+  .reorder-title { font-size: 16px; font-weight: 800; color: #2d2d2d; margin-bottom: 6px; }
+  .reorder-sub { font-size: 13px; color: #aaa; font-weight: 600; margin-bottom: 20px; }
+
+  .reorder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+  }
+
+  .reorder-item {
+    background: white;
+    border: 2.5px solid #f0f0f0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    transition: box-shadow 0.2s, transform 0.2s;
+    user-select: none;
+  }
+
+  .reorder-item:active { cursor: grabbing; }
+  .reorder-item.sortable-ghost { opacity: 0.4; transform: scale(0.97); }
+  .reorder-item.sortable-chosen { box-shadow: 0 8px 24px rgba(124,111,239,0.25); border-color: #7c6fef; transform: scale(1.03); }
+
+  .reorder-item img { width: 100%; height: 110px; object-fit: cover; display: block; pointer-events: none; }
+
+  .reorder-badge {
+    position: absolute; top: 7px; left: 7px;
+    background: #7c6fef; color: white;
+    width: 26px; height: 26px; border-radius: 50%;
+    font-size: 12px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(124,111,239,0.4);
+  }
+
+  .drag-handle {
+    position: absolute; top: 7px; right: 7px;
+    background: rgba(255,255,255,0.9);
+    width: 26px; height: 26px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .remove-btn {
+    position: absolute; bottom: 36px; right: 7px;
+    background: #ff6b9d; border: none; color: white;
+    width: 24px; height: 24px; border-radius: 50%;
+    cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900;
+  }
+
+  .reorder-item-name {
+    padding: 7px 10px;
+    font-size: 10px; color: #bbb; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .reorder-hint {
+    margin-top: 16px;
+    background: #f8f7ff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #7c6fef;
+    text-align: center;
+  }
+
+  /* Convert Button */
   .convert-btn { width: 100%; background: linear-gradient(135deg, #ff6b9d, #ff8c69); color: white; border: none; padding: 20px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; display: none; box-shadow: 0 6px 20px rgba(255,107,157,0.35); }
   .convert-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,107,157,0.45); }
   .convert-btn.visible { display: block; }
   .convert-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* Progress */
   .progress-section { display: none; margin-bottom: 20px; }
   .progress-section.visible { display: block; }
   .progress-card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); text-align: center; }
@@ -71,6 +139,8 @@
   .progress-bar-wrap { background: #f5f5f5; border-radius: 999px; height: 12px; overflow: hidden; margin: 14px 0 10px; }
   .progress-bar { height: 100%; background: linear-gradient(90deg, #ff6b9d, #ffa35c); border-radius: 999px; width: 0%; transition: width 0.3s; }
   .progress-text { font-size: 14px; color: #aaa; font-weight: 700; }
+
+  /* Results */
   .results-section { display: none; margin-bottom: 20px; }
   .results-section.visible { display: block; }
   .success-banner { background: linear-gradient(135deg, #f0fff4, #e8fff8); border: 2px solid #b2f0e0; border-radius: 16px; padding: 16px 20px; text-align: center; font-size: 15px; font-weight: 800; color: #2d9e7a; margin-bottom: 16px; }
@@ -79,33 +149,41 @@
   .result-name { font-size: 14px; font-weight: 800; color: #2d2d2d; margin-bottom: 4px; }
   .result-meta { font-size: 12px; color: #bbb; font-weight: 600; }
   .result-meta .saved { color: #4ecdc4; font-weight: 800; }
-  .download-btn { background: #f0fffe; border: 2px solid #d5f5f3; color: #4ecdc4; padding: 8px 16px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-left: 12px; }
-  .download-btn:hover { background: #4ecdc4; color: white; border-color: #4ecdc4; }
+  .dl-btn { background: #f0fffe; border: 2px solid #d5f5f3; color: #4ecdc4; padding: 8px 16px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-left: 12px; }
+  .dl-btn:hover { background: #4ecdc4; color: white; border-color: #4ecdc4; }
   .download-all-btn { width: 100%; background: linear-gradient(135deg, #7c6fef, #4ecdc4); color: white; border: none; padding: 18px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 6px 20px rgba(124,111,239,0.3); }
   .download-all-btn:hover { transform: translateY(-3px); }
-  @media (max-width: 500px) { .size-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 500px) { .size-grid { grid-template-columns: 1fr; } .reorder-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
 </style>
 </head>
 <body>
 <div class="container">
+
   <div class="header">
     <span class="header-emoji">🏨</span>
     <h1>Pavi's <span>Image Tool</span> ✨</h1>
     <p>Resize & convert hotel images in seconds!</p>
   </div>
+
   <div class="steps">
     <div class="step"><div class="step-num">1</div> Hotel Name</div>
     <div class="step"><div class="step-num">2</div> Pick Size</div>
     <div class="step"><div class="step-num">3</div> Upload Photos</div>
-    <div class="step"><div class="step-num">4</div> Download! 🎉</div>
+    <div class="step"><div class="step-num">4</div> Arrange Order</div>
+    <div class="step"><div class="step-num">5</div> Download! 🎉</div>
   </div>
+
+  <!-- Step 1 -->
   <div class="card">
     <div class="card-title">🏷️ Step 1 — Type the Hotel Name</div>
     <div class="hotel-field">
       <input type="text" id="hotelName" placeholder="e.g. Grand Hyatt Dubai">
-      <div class="name-preview">📁 Files will be saved as: <span id="namePreview">grand_hyatt_dubai_800x1200_1.webp</span></div>
+      <div class="name-preview">📁 Files will be saved as: <span id="namePreview">grand_hyatt_dubai_640x460_1.webp</span></div>
     </div>
   </div>
+
+  <!-- Step 2 -->
   <div class="card">
     <div class="card-title">📐 Step 2 — Choose Image Size</div>
     <div class="size-grid">
@@ -123,7 +201,8 @@
       <button class="preset-btn" onclick="setSize(1024,683)">🖥️ 1024×683</button>
     </div>
   </div>
-  <input type="hidden" id="qualityInput" value="0.85">
+
+  <!-- Step 3 -->
   <div class="card">
     <div class="card-title">🖼️ Step 3 — Upload Hotel Photos</div>
     <div class="dropzone" id="dropzone">
@@ -133,11 +212,24 @@
       <div class="drop-sub">Or drag & drop them here 👆<br>Supports JPG and PNG only</div>
     </div>
   </div>
-  <div class="preview-section" id="previewSection">
-    <div class="section-label">📸 Your Photos</div>
-    <div class="preview-grid" id="previewGrid"></div>
+
+  <!-- Step 4: Reorder -->
+  <div class="reorder-section" id="reorderSection">
+    <div class="reorder-card">
+      <div class="reorder-title">🔀 Step 4 — Arrange Your Photos</div>
+      <div class="reorder-sub">Drag the photos to put them in the right order. The number shows the final file name order.</div>
+      <div class="reorder-grid" id="reorderGrid"></div>
+      <div class="reorder-hint">✋ Drag photos to reorder them • ❌ Tap the pink button to remove</div>
+    </div>
   </div>
+
+  <!-- Hidden quality -->
+  <input type="hidden" id="qualityInput" value="0.85">
+
+  <!-- Convert Button -->
   <button class="convert-btn" id="convertBtn" onclick="convertAll()">✨ Convert All Photos to WebP!</button>
+
+  <!-- Progress -->
   <div class="progress-section" id="progressSection">
     <div class="progress-card">
       <span class="progress-emoji">⚙️</span>
@@ -146,20 +238,29 @@
       <div class="progress-text" id="progressText">Starting...</div>
     </div>
   </div>
+
+  <!-- Results -->
   <div class="results-section" id="resultsSection">
     <div class="success-banner">🎉 All done! Your photos are ready to download!</div>
     <div id="resultsList"></div>
     <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">📦 Download All as ZIP</button>
   </div>
+
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  let files = [], converted = [];
+  let files = [];
+  let converted = [];
+  let sortable = null;
+  let previewUrls = []; // store URLs separately so they don't get lost
 
+  // Name preview
   function updateNamePreview() {
     const hotel = getHotelName();
-    const w = document.getElementById('widthInput').value || '1200';
-    const h = document.getElementById('heightInput').value || '800';
+    const w = document.getElementById('widthInput').value || '640';
+    const h = document.getElementById('heightInput').value || '460';
     document.getElementById('namePreview').textContent = `${hotel}_${w}x${h}_1.webp`;
   }
 
@@ -172,6 +273,7 @@
   document.getElementById('widthInput').addEventListener('input', updateNamePreview);
   document.getElementById('heightInput').addEventListener('input', updateNamePreview);
 
+  // Upload
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
 
@@ -183,20 +285,71 @@
   });
   fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
 
-  function addFiles(newFiles) { files = [...files, ...newFiles]; renderPreviews(); }
-  function removeFile(index) { files.splice(index, 1); renderPreviews(); }
+  function addFiles(newFiles) {
+    const validFiles = newFiles.filter(f => f.type === 'image/jpeg' || f.type === 'image/png');
+    validFiles.forEach(f => {
+      files.push(f);
+      previewUrls.push(URL.createObjectURL(f));
+    });
+    renderReorderGrid();
+  }
 
-  function renderPreviews() {
-    const grid = document.getElementById('previewGrid');
-    const section = document.getElementById('previewSection');
+  function removeFile(index) {
+    syncOrderFromDOM();
+    URL.revokeObjectURL(previewUrls[index]);
+    files.splice(index, 1);
+    previewUrls.splice(index, 1);
+    renderReorderGrid();
+  }
+
+  // Sync files array order from current DOM order
+  function syncOrderFromDOM() {
+    const grid = document.getElementById('reorderGrid');
+    const items = Array.from(grid.querySelectorAll('.reorder-item'));
+    const newFiles = items.map(item => files[parseInt(item.dataset.index)]);
+    const newUrls = items.map(item => previewUrls[parseInt(item.dataset.index)]);
+    files = newFiles;
+    previewUrls = newUrls;
+  }
+
+  function renderReorderGrid() {
+    const grid = document.getElementById('reorderGrid');
+    const section = document.getElementById('reorderSection');
     const btn = document.getElementById('convertBtn');
-    if (files.length === 0) { section.classList.remove('visible'); btn.classList.remove('visible'); return; }
-    section.classList.add('visible'); btn.classList.add('visible');
+
+    if (files.length === 0) {
+      section.classList.remove('visible');
+      btn.classList.remove('visible');
+      return;
+    }
+
+    section.classList.add('visible');
+    btn.classList.add('visible');
+
     grid.innerHTML = files.map((f, i) => {
-      const url = URL.createObjectURL(f);
-      const sizeKB = (f.size / 1024).toFixed(0);
-      return `<div class="preview-card"><img src="${url}" alt="${f.name}"><button class="remove-btn" onclick="removeFile(${i})">×</button><div class="preview-card-info"><div class="preview-card-name">${f.name}</div><div class="preview-card-size">${sizeKB} KB</div></div></div>`;
+      return `
+        <div class="reorder-item" data-index="${i}">
+          <img src="${previewUrls[i]}" alt="${f.name}">
+          <div class="reorder-badge">${i + 1}</div>
+          <div class="drag-handle">⠿</div>
+          <button class="remove-btn" onclick="removeFile(${i})">×</button>
+          <div class="reorder-item-name">${f.name}</div>
+        </div>
+      `;
     }).join('');
+
+    // Init or refresh Sortable
+    if (sortable) { sortable.destroy(); }
+    sortable = new Sortable(grid, {
+      animation: 200,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      onEnd: () => {
+        syncOrderFromDOM();
+        renderReorderGrid();
+      }
+    });
+
     btn.textContent = `✨ Convert ${files.length} Photo${files.length > 1 ? 's' : ''} to WebP!`;
   }
 
@@ -208,22 +361,27 @@
 
   async function convertAll() {
     if (files.length === 0) return;
+
     const width = parseInt(document.getElementById('widthInput').value);
     const height = parseInt(document.getElementById('heightInput').value);
     const quality = parseFloat(document.getElementById('qualityInput').value);
     const hotelName = getHotelName();
 
-    // Validation
     if (!document.getElementById('hotelName').value.trim()) {
       alert('⚠️ Please type the hotel name first!'); return;
     }
     if (!width || !height || width < 1 || height < 1) {
       alert('⚠️ Please enter a valid width and height!'); return;
     }
+
+    // Sync final order from DOM before converting
+    syncOrderFromDOM();
+
     converted = [];
     document.getElementById('progressSection').classList.add('visible');
     document.getElementById('resultsSection').classList.remove('visible');
     document.getElementById('convertBtn').disabled = true;
+
     const resultsList = document.getElementById('resultsList');
     resultsList.innerHTML = '';
 
@@ -240,7 +398,7 @@
         const saved = Math.round((1 - result.blob.size / file.size) * 100);
         const card = document.createElement('div');
         card.className = 'result-card';
-        card.innerHTML = `<div class="result-info"><div class="result-name">📄 ${result.name}</div><div class="result-meta">${width}×${height}px &nbsp;·&nbsp; ${originalKB}KB → ${newKB}KB &nbsp;·&nbsp; <span class="saved">${saved > 0 ? '↓ ' + saved + '% smaller 🎉' : '✅ converted'}</span></div></div><button class="download-btn" onclick="downloadSingle(${converted.length - 1})">⬇ Save</button>`;
+        card.innerHTML = `<div class="result-info"><div class="result-name">📄 ${result.name}</div><div class="result-meta">${width}×${height}px &nbsp;·&nbsp; ${originalKB}KB → ${newKB}KB &nbsp;·&nbsp; <span class="saved">${saved > 0 ? '↓ ' + saved + '% smaller 🎉' : '✅ converted'}</span></div></div><button class="dl-btn" onclick="downloadSingle(${converted.length - 1})">⬇ Save</button>`;
         resultsList.appendChild(card);
       } catch (err) { console.error('Error:', err); }
     }
