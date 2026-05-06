@@ -160,7 +160,7 @@
     const hotel = getHotelName();
     const w = document.getElementById('widthInput').value || '1200';
     const h = document.getElementById('heightInput').value || '800';
-    document.getElementById('namePreview').textContent = `${hotel}_${h}x${w}_1.webp`;
+    document.getElementById('namePreview').textContent = `${hotel}_${w}x${h}_1.webp`;
   }
 
   function getHotelName() {
@@ -232,7 +232,7 @@
       document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
       document.getElementById('progressText').textContent = `Photo ${i + 1} of ${files.length} — almost there! 🚀`;
       try {
-        const fileName = `${hotelName}_${height}x${width}_${i + 1}.webp`;
+        const fileName = `${hotelName}_${width}x${height}_${i + 1}.webp`;
         const result = await convertImage(file, width, height, quality, fileName);
         converted.push(result);
         const originalKB = (file.size / 1024).toFixed(0);
