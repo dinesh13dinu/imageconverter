@@ -3,455 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Converter — WebP Tool</title>
+<title>🏨 Pavi's Image Tool</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
-    --surface2: #242424;
-    --border: #2e2e2e;
-    --accent: #c8f542;
-    --accent2: #f5a623;
-    --text: #f0f0f0;
-    --text-muted: #777;
-    --radius: 12px;
-  }
-
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0fb 50%, #f0f4ff 100%);
+    font-family: 'Nunito', sans-serif;
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 32px 20px 60px;
   }
-
-  .grain {
-    position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  .container { max-width: 760px; margin: 0 auto; }
-
-  header { margin-bottom: 48px; }
-
-  .logo {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--accent); color: #000;
-    padding: 6px 14px; border-radius: 6px;
-    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(32px, 5vw, 52px);
-    line-height: 1.1;
-    color: var(--text);
-  }
-
-  h1 span { color: var(--accent); }
-
-  .subtitle {
-    margin-top: 12px;
-    color: var(--text-muted);
-    font-size: 15px;
-    font-weight: 300;
-  }
-
-  /* Settings Row */
-  .settings {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-  }
-
-  @media (max-width: 600px) { .settings { grid-template-columns: 1fr; } }
-
-  .field label {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .field input, .field select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .field input:focus, .field select:focus { border-color: var(--accent); }
-
-  .presets {
-    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
-  }
-
-  .preset-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* Drop Zone */
-  .dropzone {
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 60px 40px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: var(--surface);
-    position: relative;
-    margin-bottom: 24px;
-  }
-
-  .dropzone.drag-over {
-    border-color: var(--accent);
-    background: rgba(200, 245, 66, 0.04);
-  }
-
-  .dropzone input[type="file"] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
-
-  .drop-icon {
-    font-size: 48px; margin-bottom: 16px; display: block;
-    filter: grayscale(1) opacity(0.4);
-  }
-
-  .drop-title {
-    font-size: 18px; font-weight: 500; margin-bottom: 8px;
-  }
-
-  .drop-sub {
-    font-size: 13px; color: var(--text-muted);
-  }
-
-  /* Preview Grid */
-  .preview-section { margin-bottom: 24px; display: none; }
+  .container { max-width: 700px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 36px; }
+  .header-emoji { font-size: 64px; display: block; margin-bottom: 12px; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .header h1 { font-size: 32px; font-weight: 900; color: #2d2d2d; margin-bottom: 8px; }
+  .header h1 span { color: #ff6b9d; }
+  .header p { font-size: 16px; color: #888; font-weight: 600; }
+  .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+  .step { display: flex; align-items: center; gap: 6px; background: white; border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: white; }
+  .step:nth-child(1) .step-num { background: #ff6b9d; }
+  .step:nth-child(2) .step-num { background: #ffa35c; }
+  .step:nth-child(3) .step-num { background: #7c6fef; }
+  .step:nth-child(4) .step-num { background: #4ecdc4; }
+  .card { background: white; border-radius: 24px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .card-title { font-size: 16px; font-weight: 800; color: #2d2d2d; margin-bottom: 20px; }
+  .hotel-field input { width: 100%; border: 2.5px solid #ffe0ee; border-radius: 14px; padding: 14px 18px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: #2d2d2d; outline: none; transition: border-color 0.2s; background: #fff9fb; }
+  .hotel-field input:focus { border-color: #ff6b9d; background: white; }
+  .hotel-field input::placeholder { color: #ccc; font-weight: 600; }
+  .name-preview { margin-top: 10px; background: #fff0f7; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700; color: #ff6b9d; }
+  .name-preview span { color: #aaa; font-weight: 600; }
+  .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .size-field label { display: block; font-size: 13px; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .size-field input { width: 100%; border: 2.5px solid #e8e8ff; border-radius: 14px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #7c6fef; outline: none; transition: border-color 0.2s; background: #f8f7ff; text-align: center; }
+  .size-field input:focus { border-color: #7c6fef; background: white; }
+  .preset-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .preset-btn { background: linear-gradient(135deg, #f8f7ff, #fff0fb); border: 2px solid #e0dcff; color: #7c6fef; padding: 8px 14px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.15s; }
+  .preset-btn:hover { background: #7c6fef; color: white; border-color: #7c6fef; transform: translateY(-2px); }
+  .quality-select { width: 100%; border: 2.5px solid #d5f5f3; border-radius: 14px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; color: #2d2d2d; outline: none; background: #f0fffe; cursor: pointer; }
+  .dropzone { border: 3px dashed #ffd6e8; border-radius: 20px; padding: 50px 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: linear-gradient(135deg, #fff9fb, #fff5ff); position: relative; }
+  .dropzone:hover, .dropzone.drag-over { border-color: #ff6b9d; background: #fff0f7; transform: scale(1.01); }
+  .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .drop-emoji { font-size: 52px; display: block; margin-bottom: 14px; }
+  .drop-title { font-size: 20px; font-weight: 900; color: #2d2d2d; margin-bottom: 8px; }
+  .drop-sub { font-size: 14px; color: #bbb; font-weight: 600; }
+  .preview-section { margin-bottom: 20px; display: none; }
   .preview-section.visible { display: block; }
-
-  .section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-title::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-
-  .preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-  }
-
-  .preview-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .preview-card img {
-    width: 100%; height: 110px; object-fit: cover; display: block;
-  }
-
-  .preview-card-info {
-    padding: 8px 10px;
-  }
-
-  .preview-card-name {
-    font-size: 11px;
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .preview-card-size {
-    font-size: 10px;
-    color: var(--text-muted);
-    opacity: 0.6;
-    margin-top: 2px;
-  }
-
-  .remove-btn {
-    position: absolute; top: 6px; right: 6px;
-    background: rgba(0,0,0,0.7); border: none;
-    color: #fff; width: 22px; height: 22px;
-    border-radius: 50%; cursor: pointer;
-    font-size: 12px; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-
-  .remove-btn:hover { background: #e74c3c; }
-
-  /* Convert Button */
-  .convert-btn {
-    width: 100%;
-    background: var(--accent);
-    color: #000;
-    border: none;
-    padding: 18px;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 24px;
-    display: none;
-    letter-spacing: 0.02em;
-  }
-
-  .convert-btn:hover { background: #d4ff44; transform: translateY(-1px); }
-  .convert-btn:active { transform: translateY(0); }
+  .section-label { font-size: 14px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+  .preview-card { background: white; border: 2px solid #f0f0f0; border-radius: 16px; overflow: hidden; position: relative; transition: transform 0.2s; }
+  .preview-card:hover { transform: translateY(-3px); }
+  .preview-card img { width: 100%; height: 100px; object-fit: cover; display: block; }
+  .preview-card-info { padding: 8px 10px; }
+  .preview-card-name { font-size: 11px; color: #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+  .preview-card-size { font-size: 10px; color: #ccc; margin-top: 2px; font-weight: 600; }
+  .remove-btn { position: absolute; top: 6px; right: 6px; background: #ff6b9d; border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+  .convert-btn { width: 100%; background: linear-gradient(135deg, #ff6b9d, #ff8c69); color: white; border: none; padding: 20px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; display: none; box-shadow: 0 6px 20px rgba(255,107,157,0.35); }
+  .convert-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,107,157,0.45); }
   .convert-btn.visible { display: block; }
-  .convert-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  /* Progress */
-  .progress-section { display: none; margin-bottom: 24px; }
+  .convert-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .progress-section { display: none; margin-bottom: 20px; }
   .progress-section.visible { display: block; }
-
-  .progress-bar-wrap {
-    background: var(--surface2);
-    border-radius: 999px;
-    height: 6px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 999px;
-    width: 0%;
-    transition: width 0.3s;
-  }
-
-  .progress-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  /* Results */
-  .results-section { display: none; margin-bottom: 24px; }
+  .progress-card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); text-align: center; }
+  .progress-emoji { font-size: 36px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .progress-bar-wrap { background: #f5f5f5; border-radius: 999px; height: 12px; overflow: hidden; margin: 14px 0 10px; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, #ff6b9d, #ffa35c); border-radius: 999px; width: 0%; transition: width 0.3s; }
+  .progress-text { font-size: 14px; color: #aaa; font-weight: 700; }
+  .results-section { display: none; margin-bottom: 20px; }
   .results-section.visible { display: block; }
-
-  .result-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
+  .success-banner { background: linear-gradient(135deg, #f0fff4, #e8fff8); border: 2px solid #b2f0e0; border-radius: 16px; padding: 16px 20px; text-align: center; font-size: 15px; font-weight: 800; color: #2d9e7a; margin-bottom: 16px; }
+  .result-card { background: white; border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 2px solid #f5f5f5; }
   .result-info { flex: 1; }
-
-  .result-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    margin-bottom: 4px;
-  }
-
-  .result-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  .result-meta .saved {
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .download-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .download-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .download-all-btn {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 14px;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 8px;
-  }
-
-  .download-all-btn:hover { background: var(--accent); color: #000; }
-
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent); display: inline-block;
-    margin-right: 6px; animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .badge {
-    display: inline-flex; align-items: center;
-    background: rgba(200,245,66,0.1);
-    border: 1px solid rgba(200,245,66,0.3);
-    color: var(--accent);
-    padding: 3px 8px; border-radius: 4px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  .result-name { font-size: 14px; font-weight: 800; color: #2d2d2d; margin-bottom: 4px; }
+  .result-meta { font-size: 12px; color: #bbb; font-weight: 600; }
+  .result-meta .saved { color: #4ecdc4; font-weight: 800; }
+  .download-btn { background: #f0fffe; border: 2px solid #d5f5f3; color: #4ecdc4; padding: 8px 16px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-left: 12px; }
+  .download-btn:hover { background: #4ecdc4; color: white; border-color: #4ecdc4; }
+  .download-all-btn { width: 100%; background: linear-gradient(135deg, #7c6fef, #4ecdc4); color: white; border: none; padding: 18px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 6px 20px rgba(124,111,239,0.3); }
+  .download-all-btn:hover { transform: translateY(-3px); }
+  @media (max-width: 500px) { .size-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<div class="grain"></div>
 <div class="container">
-
-  <header>
-    <div class="logo">⚡ Canva Tools</div>
-    <h1>Image <span>Resizer</span><br>& WebP Converter</h1>
-    <p class="subtitle">Upload hotel images → resize → convert to WebP → download. All in one click.</p>
-  </header>
-
-  <!-- Settings -->
-  <div class="settings" style="grid-template-columns: 1fr 1fr; row-gap: 20px;">
-    <div class="field" style="grid-column: 1 / -1;">
-      <label>Hotel Name</label>
-      <input type="text" id="hotelName" placeholder="e.g. grand_hyatt_dubai" style="font-size:15px;">
-      <div style="margin-top:6px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-muted);">
-        Preview: <span id="namePreview" style="color:var(--accent);">grand_hyatt_dubai_800x1200_1.webp</span>
-      </div>
-    </div>
-    <div class="field">
-      <label>Width (px)</label>
-      <input type="number" id="widthInput" value="1200" min="1" max="5000">
-      <div class="presets">
-        <button class="preset-btn" onclick="setSize(800,600)">800×600</button>
-        <button class="preset-btn" onclick="setSize(1200,800)">1200×800</button>
-        <button class="preset-btn" onclick="setSize(1920,1080)">1920×1080</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Height (px)</label>
-      <input type="number" id="heightInput" value="800" min="1" max="5000">
-    </div>
-    <div class="field" style="grid-column: 1 / -1;">
-      <label>WebP Quality</label>
-      <select id="qualityInput">
-        <option value="0.95">95% — Max Quality</option>
-        <option value="0.85" selected>85% — Recommended</option>
-        <option value="0.75">75% — Smaller Size</option>
-        <option value="0.60">60% — Smallest</option>
-      </select>
+  <div class="header">
+    <span class="header-emoji">🏨</span>
+    <h1>Pavi's <span>Image Tool</span> ✨</h1>
+    <p>Resize & convert hotel images in seconds!</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div> Hotel Name</div>
+    <div class="step"><div class="step-num">2</div> Pick Size</div>
+    <div class="step"><div class="step-num">3</div> Upload Photos</div>
+    <div class="step"><div class="step-num">4</div> Download! 🎉</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🏷️ Step 1 — Type the Hotel Name</div>
+    <div class="hotel-field">
+      <input type="text" id="hotelName" placeholder="e.g. Grand Hyatt Dubai">
+      <div class="name-preview">📁 Files will be saved as: <span id="namePreview">grand_hyatt_dubai_800x1200_1.webp</span></div>
     </div>
   </div>
-
-  <!-- Drop Zone -->
-  <div class="dropzone" id="dropzone">
-    <input type="file" id="fileInput" multiple accept="image/*">
-    <span class="drop-icon">🖼️</span>
-    <div class="drop-title">Drop images here or click to browse</div>
-    <div class="drop-sub">Supports JPG, PNG, WEBP, HEIC — any number of files</div>
+  <div class="card">
+    <div class="card-title">📐 Step 2 — Choose Image Size</div>
+    <div class="size-grid">
+      <div class="size-field">
+        <label>↔️ Width (px)</label>
+        <input type="number" id="widthInput" value="640" min="1" max="5000">
+      </div>
+      <div class="size-field">
+        <label>↕️ Height (px)</label>
+        <input type="number" id="heightInput" value="460" min="1" max="5000">
+      </div>
+    </div>
+    <div class="preset-row">
+      <button class="preset-btn" onclick="setSize(640,460)">📱 640×460</button>
+      <button class="preset-btn" onclick="setSize(1024,683)">🖥️ 1024×683</button>
+    </div>
   </div>
-
-  <!-- Preview -->
+  <input type="hidden" id="qualityInput" value="0.85">
+  <div class="card">
+    <div class="card-title">🖼️ Step 3 — Upload Hotel Photos</div>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+      <span class="drop-emoji">📂</span>
+      <div class="drop-title">Click here to pick photos!</div>
+      <div class="drop-sub">Or drag & drop them here 👆<br>Supports JPG and PNG only</div>
+    </div>
+  </div>
   <div class="preview-section" id="previewSection">
-    <div class="section-title">Selected Images</div>
+    <div class="section-label">📸 Your Photos</div>
     <div class="preview-grid" id="previewGrid"></div>
   </div>
-
-  <!-- Convert Button -->
-  <button class="convert-btn" id="convertBtn" onclick="convertAll()">
-    ⚡ Convert All to WebP
-  </button>
-
-  <!-- Progress -->
+  <button class="convert-btn" id="convertBtn" onclick="convertAll()">✨ Convert All Photos to WebP!</button>
   <div class="progress-section" id="progressSection">
-    <div class="section-title"><span class="status-dot"></span>Converting</div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-card">
+      <span class="progress-emoji">⚙️</span>
+      <div style="font-size:16px; font-weight:800; color:#2d2d2d;">Converting your photos...</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText">Starting...</div>
     </div>
-    <div class="progress-text" id="progressText">Starting...</div>
   </div>
-
-  <!-- Results -->
   <div class="results-section" id="resultsSection">
-    <div class="section-title">
-      Converted Files
-      <span class="badge" id="resultCount">0 files</span>
-    </div>
+    <div class="success-banner">🎉 All done! Your photos are ready to download!</div>
     <div id="resultsList"></div>
-    <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">
-      ⬇ Download All as ZIP
-    </button>
+    <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">📦 Download All as ZIP</button>
   </div>
-
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  let files = [];
-  let converted = [];
+  let files = [], converted = [];
 
-  // Live preview of filename
   function updateNamePreview() {
     const hotel = getHotelName();
     const w = document.getElementById('widthInput').value || '1200';
@@ -468,125 +172,81 @@
   document.getElementById('widthInput').addEventListener('input', updateNamePreview);
   document.getElementById('heightInput').addEventListener('input', updateNamePreview);
 
-  // Drag and drop
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
 
   dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
   dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
   dropzone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropzone.classList.remove('drag-over');
-    addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+    e.preventDefault(); dropzone.classList.remove('drag-over');
+    addFiles(Array.from(e.dataTransfer.files).filter(f => f.type === 'image/jpeg' || f.type === 'image/png'));
   });
+  fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
 
-  fileInput.addEventListener('change', () => {
-    addFiles(Array.from(fileInput.files));
-    fileInput.value = '';
-  });
-
-  function addFiles(newFiles) {
-    files = [...files, ...newFiles];
-    renderPreviews();
-  }
-
-  function removeFile(index) {
-    files.splice(index, 1);
-    renderPreviews();
-  }
+  function addFiles(newFiles) { files = [...files, ...newFiles]; renderPreviews(); }
+  function removeFile(index) { files.splice(index, 1); renderPreviews(); }
 
   function renderPreviews() {
     const grid = document.getElementById('previewGrid');
     const section = document.getElementById('previewSection');
     const btn = document.getElementById('convertBtn');
-
-    if (files.length === 0) {
-      section.classList.remove('visible');
-      btn.classList.remove('visible');
-      return;
-    }
-
-    section.classList.add('visible');
-    btn.classList.add('visible');
-
+    if (files.length === 0) { section.classList.remove('visible'); btn.classList.remove('visible'); return; }
+    section.classList.add('visible'); btn.classList.add('visible');
     grid.innerHTML = files.map((f, i) => {
       const url = URL.createObjectURL(f);
       const sizeKB = (f.size / 1024).toFixed(0);
-      return `
-        <div class="preview-card">
-          <img src="${url}" alt="${f.name}">
-          <button class="remove-btn" onclick="removeFile(${i})">×</button>
-          <div class="preview-card-info">
-            <div class="preview-card-name">${f.name}</div>
-            <div class="preview-card-size">${sizeKB} KB</div>
-          </div>
-        </div>
-      `;
+      return `<div class="preview-card"><img src="${url}" alt="${f.name}"><button class="remove-btn" onclick="removeFile(${i})">×</button><div class="preview-card-info"><div class="preview-card-name">${f.name}</div><div class="preview-card-size">${sizeKB} KB</div></div></div>`;
     }).join('');
-
-    btn.textContent = `⚡ Convert ${files.length} Image${files.length > 1 ? 's' : ''} to WebP`;
+    btn.textContent = `✨ Convert ${files.length} Photo${files.length > 1 ? 's' : ''} to WebP!`;
   }
 
   function setSize(w, h) {
     document.getElementById('widthInput').value = w;
     document.getElementById('heightInput').value = h;
+    updateNamePreview();
   }
 
   async function convertAll() {
     if (files.length === 0) return;
-
     const width = parseInt(document.getElementById('widthInput').value);
     const height = parseInt(document.getElementById('heightInput').value);
     const quality = parseFloat(document.getElementById('qualityInput').value);
     const hotelName = getHotelName();
 
+    // Validation
+    if (!document.getElementById('hotelName').value.trim()) {
+      alert('⚠️ Please type the hotel name first!'); return;
+    }
+    if (!width || !height || width < 1 || height < 1) {
+      alert('⚠️ Please enter a valid width and height!'); return;
+    }
     converted = [];
-
     document.getElementById('progressSection').classList.add('visible');
     document.getElementById('resultsSection').classList.remove('visible');
     document.getElementById('convertBtn').disabled = true;
-
     const resultsList = document.getElementById('resultsList');
     resultsList.innerHTML = '';
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const progress = Math.round(((i) / files.length) * 100);
-      document.getElementById('progressBar').style.width = progress + '%';
-      document.getElementById('progressText').textContent = `Converting ${i + 1} of ${files.length}: ${file.name}`;
-
+      document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
+      document.getElementById('progressText').textContent = `Photo ${i + 1} of ${files.length} — almost there! 🚀`;
       try {
-        // Filename format: hotelname_heightxwidth_1.webp
         const fileName = `${hotelName}_${height}x${width}_${i + 1}.webp`;
         const result = await convertImage(file, width, height, quality, fileName);
         converted.push(result);
-
         const originalKB = (file.size / 1024).toFixed(0);
         const newKB = (result.blob.size / 1024).toFixed(0);
         const saved = Math.round((1 - result.blob.size / file.size) * 100);
-
         const card = document.createElement('div');
         card.className = 'result-card';
-        card.innerHTML = `
-          <div class="result-info">
-            <div class="result-name">${result.name}</div>
-            <div class="result-meta">
-              ${width}×${height}px &nbsp;·&nbsp;
-              ${originalKB}KB → ${newKB}KB &nbsp;·&nbsp;
-              <span class="saved">${saved > 0 ? '↓' + saved + '% smaller' : 'converted'}</span>
-            </div>
-          </div>
-          <button class="download-btn" onclick="downloadSingle(${converted.length - 1})">Download</button>
-        `;
+        card.innerHTML = `<div class="result-info"><div class="result-name">📄 ${result.name}</div><div class="result-meta">${width}×${height}px &nbsp;·&nbsp; ${originalKB}KB → ${newKB}KB &nbsp;·&nbsp; <span class="saved">${saved > 0 ? '↓ ' + saved + '% smaller 🎉' : '✅ converted'}</span></div></div><button class="download-btn" onclick="downloadSingle(${converted.length - 1})">⬇ Save</button>`;
         resultsList.appendChild(card);
-      } catch (err) {
-        console.error('Error converting', file.name, err);
-      }
+      } catch (err) { console.error('Error:', err); }
     }
 
     document.getElementById('progressBar').style.width = '100%';
-    document.getElementById('progressText').textContent = `Done! ${converted.length} images converted.`;
-    document.getElementById('resultCount').textContent = `${converted.length} files`;
+    document.getElementById('progressText').textContent = `All ${converted.length} photos done! 🎉`;
     document.getElementById('resultsSection').classList.add('visible');
     document.getElementById('convertBtn').disabled = false;
   }
@@ -597,31 +257,21 @@
       const url = URL.createObjectURL(file);
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = width; canvas.height = height;
         const ctx = canvas.getContext('2d');
-
         const srcRatio = img.width / img.height;
         const dstRatio = width / height;
         let sx = 0, sy = 0, sw = img.width, sh = img.height;
-        if (srcRatio > dstRatio) {
-          sw = img.height * dstRatio;
-          sx = (img.width - sw) / 2;
-        } else {
-          sh = img.width / dstRatio;
-          sy = (img.height - sh) / 2;
-        }
-
+        if (srcRatio > dstRatio) { sw = img.height * dstRatio; sx = (img.width - sw) / 2; }
+        else { sh = img.width / dstRatio; sy = (img.height - sh) / 2; }
         ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
         URL.revokeObjectURL(url);
-
         canvas.toBlob(blob => {
-          if (!blob) return reject(new Error('Conversion failed'));
+          if (!blob) return reject(new Error('Failed'));
           resolve({ name: fileName, blob });
         }, 'image/webp', quality);
       };
-      img.onerror = reject;
-      img.src = url;
+      img.onerror = reject; img.src = url;
     });
   }
 
@@ -636,22 +286,17 @@
   async function downloadAll() {
     if (converted.length === 0) return;
     const btn = document.getElementById('downloadAllBtn');
-    btn.textContent = 'Creating ZIP...';
+    btn.textContent = '📦 Creating ZIP... please wait!';
     btn.disabled = true;
-
     const zip = new JSZip();
     converted.forEach(({ name, blob }) => zip.file(name, blob));
-
     const hotelName = getHotelName();
     const zipBlob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(zipBlob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `${hotelName}-webp-images.zip`;
-    a.click();
+    a.href = url; a.download = `${hotelName}-photos.zip`; a.click();
     URL.revokeObjectURL(url);
-
-    btn.textContent = '⬇ Download All as ZIP';
+    btn.textContent = '📦 Download All as ZIP';
     btn.disabled = false;
   }
 </script>
