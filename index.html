@@ -16,6 +16,21 @@
   .header h1 span { color: #ff6b9d; }
   .header p { font-size: 16px; color: #888; font-weight: 600; }
 
+  /* MODE TOGGLE */
+  .mode-toggle { display: flex; gap: 12px; margin-bottom: 28px; }
+  .mode-btn {
+    flex: 1; padding: 16px; border-radius: 18px; border: 2.5px solid #f0f0f0;
+    background: white; font-family: 'Nunito', sans-serif; font-size: 15px;
+    font-weight: 800; cursor: pointer; transition: all 0.2s; text-align: center;
+    color: #aaa;
+  }
+  .mode-btn.active-webp { border-color: #7c6fef; background: #f8f7ff; color: #7c6fef; box-shadow: 0 4px 14px rgba(124,111,239,0.15); }
+  .mode-btn.active-jpeg { border-color: #ff6b9d; background: #fff9fb; color: #ff6b9d; box-shadow: 0 4px 14px rgba(255,107,157,0.15); }
+  .mode-emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+  .mode-desc { font-size: 11px; font-weight: 600; color: #bbb; margin-top: 4px; }
+  .mode-btn.active-webp .mode-desc { color: #a090ef; }
+  .mode-btn.active-jpeg .mode-desc { color: #ff9cbd; }
+
   .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
   .step { display: flex; align-items: center; gap: 6px; background: white; border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
   .step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: white; }
@@ -33,6 +48,9 @@
   .hotel-field input::placeholder { color: #ccc; font-weight: 600; }
   .name-preview { margin-top: 10px; background: #fff0f7; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700; color: #ff6b9d; }
 
+  /* Size section — only shown in WebP mode */
+  .size-section { display: block; }
+  .size-section.hidden { display: none; }
   .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .size-field label { display: block; font-size: 13px; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
   .size-field input { width: 100%; border: 2.5px solid #e8e8ff; border-radius: 14px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #7c6fef; outline: none; transition: border-color 0.2s; background: #f8f7ff; text-align: center; }
@@ -41,6 +59,10 @@
   .preset-btn { background: linear-gradient(135deg, #f8f7ff, #fff0fb); border: 2px solid #e0dcff; color: #7c6fef; padding: 8px 14px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.15s; }
   .preset-btn:hover { background: #7c6fef; color: white; border-color: #7c6fef; transform: translateY(-2px); }
 
+  /* JPEG info box */
+  .jpeg-info { background: #fff0f7; border: 2px solid #ffd6e8; border-radius: 14px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: #ff6b9d; line-height: 1.7; }
+  .jpeg-info span { display: block; color: #888; font-weight: 600; font-size: 13px; margin-top: 4px; }
+
   .dropzone { border: 3px dashed #ffd6e8; border-radius: 20px; padding: 50px 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: linear-gradient(135deg, #fff9fb, #fff5ff); position: relative; }
   .dropzone:hover, .dropzone.drag-over { border-color: #ff6b9d; background: #fff0f7; transform: scale(1.01); }
   .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -48,110 +70,64 @@
   .drop-title { font-size: 20px; font-weight: 900; color: #2d2d2d; margin-bottom: 8px; }
   .drop-sub { font-size: 14px; color: #bbb; font-weight: 600; }
 
-  /* REORDER SECTION */
   .reorder-section { display: none; margin-bottom: 20px; }
   .reorder-section.visible { display: block; }
-
   .reorder-card { background: white; border-radius: 24px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
-
   .reorder-title { font-size: 16px; font-weight: 800; color: #2d2d2d; margin-bottom: 6px; }
   .reorder-sub { font-size: 13px; color: #aaa; font-weight: 600; margin-bottom: 20px; }
-
-  .reorder-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 14px;
-  }
-
-  .reorder-item {
-    background: white;
-    border: 2.5px solid #f0f0f0;
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-    cursor: grab;
-    transition: box-shadow 0.2s, transform 0.2s;
-    user-select: none;
-  }
-
+  .reorder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+  .reorder-item { background: white; border: 2.5px solid #f0f0f0; border-radius: 16px; overflow: hidden; position: relative; cursor: grab; transition: box-shadow 0.2s, transform 0.2s; user-select: none; }
   .reorder-item:active { cursor: grabbing; }
   .reorder-item.sortable-ghost { opacity: 0.4; transform: scale(0.97); }
   .reorder-item.sortable-chosen { box-shadow: 0 8px 24px rgba(124,111,239,0.25); border-color: #7c6fef; transform: scale(1.03); }
-
   .reorder-item img { width: 100%; height: 110px; object-fit: cover; display: block; pointer-events: none; }
+  .reorder-badge { position: absolute; top: 7px; left: 7px; background: #7c6fef; color: white; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(124,111,239,0.4); }
 
-  .reorder-badge {
-    position: absolute; top: 7px; left: 7px;
-    background: #7c6fef; color: white;
-    width: 26px; height: 26px; border-radius: 50%;
-    font-size: 12px; font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 6px rgba(124,111,239,0.4);
-  }
+  /* File type badge */
+  .type-badge { position: absolute; bottom: 36px; left: 7px; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+  .type-badge.jpg { background: #fff0e0; color: #ffa35c; }
+  .type-badge.png { background: #e8f4ff; color: #7c6fef; }
 
-  .drag-handle {
-    position: absolute; top: 7px; right: 7px;
-    background: rgba(255,255,255,0.9);
-    width: 26px; height: 26px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
+  .drag-handle { position: absolute; top: 7px; right: 7px; background: rgba(255,255,255,0.9); width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .remove-btn { position: absolute; bottom: 36px; right: 7px; background: #ff6b9d; border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+  .reorder-item-name { padding: 7px 10px; font-size: 10px; color: #bbb; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .reorder-hint { margin-top: 16px; background: #f8f7ff; border-radius: 12px; padding: 12px 16px; font-size: 13px; font-weight: 700; color: #7c6fef; text-align: center; }
 
-  .remove-btn {
-    position: absolute; bottom: 36px; right: 7px;
-    background: #ff6b9d; border: none; color: white;
-    width: 24px; height: 24px; border-radius: 50%;
-    cursor: pointer; font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900;
-  }
-
-  .reorder-item-name {
-    padding: 7px 10px;
-    font-size: 10px; color: #bbb; font-weight: 700;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-
-  .reorder-hint {
-    margin-top: 16px;
-    background: #f8f7ff;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #7c6fef;
-    text-align: center;
-  }
-
-  /* Convert Button */
-  .convert-btn { width: 100%; background: linear-gradient(135deg, #ff6b9d, #ff8c69); color: white; border: none; padding: 20px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; display: none; box-shadow: 0 6px 20px rgba(255,107,157,0.35); }
-  .convert-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,107,157,0.45); }
+  .convert-btn { width: 100%; color: white; border: none; padding: 20px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-bottom: 20px; display: none; }
+  .convert-btn.webp-mode { background: linear-gradient(135deg, #7c6fef, #4ecdc4); box-shadow: 0 6px 20px rgba(124,111,239,0.35); }
+  .convert-btn.jpeg-mode { background: linear-gradient(135deg, #ff6b9d, #ff8c69); box-shadow: 0 6px 20px rgba(255,107,157,0.35); }
+  .convert-btn:hover { transform: translateY(-3px); }
   .convert-btn.visible { display: block; }
   .convert-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* Progress */
   .progress-section { display: none; margin-bottom: 20px; }
   .progress-section.visible { display: block; }
   .progress-card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); text-align: center; }
   .progress-emoji { font-size: 36px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   .progress-bar-wrap { background: #f5f5f5; border-radius: 999px; height: 12px; overflow: hidden; margin: 14px 0 10px; }
-  .progress-bar { height: 100%; background: linear-gradient(90deg, #ff6b9d, #ffa35c); border-radius: 999px; width: 0%; transition: width 0.3s; }
+  .progress-bar { height: 100%; border-radius: 999px; width: 0%; transition: width 0.3s; }
+  .progress-bar.webp-mode { background: linear-gradient(90deg, #7c6fef, #4ecdc4); }
+  .progress-bar.jpeg-mode { background: linear-gradient(90deg, #ff6b9d, #ffa35c); }
   .progress-text { font-size: 14px; color: #aaa; font-weight: 700; }
 
-  /* Results */
   .results-section { display: none; margin-bottom: 20px; }
   .results-section.visible { display: block; }
-  .success-banner { background: linear-gradient(135deg, #f0fff4, #e8fff8); border: 2px solid #b2f0e0; border-radius: 16px; padding: 16px 20px; text-align: center; font-size: 15px; font-weight: 800; color: #2d9e7a; margin-bottom: 16px; }
+  .success-banner { border-radius: 16px; padding: 16px 20px; text-align: center; font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+  .success-banner.webp-mode { background: linear-gradient(135deg, #f0f4ff, #e8f0ff); border: 2px solid #c0d0ff; color: #5060ef; }
+  .success-banner.jpeg-mode { background: linear-gradient(135deg, #f0fff4, #e8fff8); border: 2px solid #b2f0e0; color: #2d9e7a; }
   .result-card { background: white; border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 2px solid #f5f5f5; }
   .result-info { flex: 1; }
   .result-name { font-size: 14px; font-weight: 800; color: #2d2d2d; margin-bottom: 4px; }
   .result-meta { font-size: 12px; color: #bbb; font-weight: 600; }
-  .result-meta .saved { color: #4ecdc4; font-weight: 800; }
+  .result-meta .tag { font-weight: 800; }
+  .result-meta .tag.converted { color: #7c6fef; }
+  .result-meta .tag.renamed { color: #ff6b9d; }
   .dl-btn { background: #f0fffe; border: 2px solid #d5f5f3; color: #4ecdc4; padding: 8px 16px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; white-space: nowrap; margin-left: 12px; }
   .dl-btn:hover { background: #4ecdc4; color: white; border-color: #4ecdc4; }
-  .download-all-btn { width: 100%; background: linear-gradient(135deg, #7c6fef, #4ecdc4); color: white; border: none; padding: 18px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 6px 20px rgba(124,111,239,0.3); }
+  .download-all-btn { width: 100%; color: white; border: none; padding: 18px; border-radius: 18px; font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+  .download-all-btn.webp-mode { background: linear-gradient(135deg, #7c6fef, #4ecdc4); box-shadow: 0 6px 20px rgba(124,111,239,0.3); }
+  .download-all-btn.jpeg-mode { background: linear-gradient(135deg, #ff6b9d, #ffa35c); box-shadow: 0 6px 20px rgba(255,107,157,0.3); }
   .download-all-btn:hover { transform: translateY(-3px); }
 
   @media (max-width: 500px) { .size-grid { grid-template-columns: 1fr; } .reorder-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
@@ -163,10 +139,25 @@
   <div class="header">
     <span class="header-emoji">🏨</span>
     <h1>Pavi's <span>Image Tool</span> ✨</h1>
-    <p>Resize & convert hotel images in seconds!</p>
+    <p>Rename, convert & resize hotel images in seconds!</p>
   </div>
 
-  <div class="steps">
+  <!-- Mode Toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn active-webp" id="btnWebp" onclick="setMode('webp')">
+      <span class="mode-emoji">🖼️</span>
+      WebP Mode
+      <div class="mode-desc">Resize + Convert to WebP</div>
+    </button>
+    <button class="mode-btn" id="btnJpeg" onclick="setMode('jpeg')">
+      <span class="mode-emoji">📷</span>
+      JPEG Mode
+      <div class="mode-desc">Rename only (PNG → JPG)</div>
+    </button>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps" id="stepsBar">
     <div class="step"><div class="step-num">1</div> Hotel Name</div>
     <div class="step"><div class="step-num">2</div> Pick Size</div>
     <div class="step"><div class="step-num">3</div> Upload Photos</div>
@@ -174,42 +165,55 @@
     <div class="step"><div class="step-num">5</div> Download! 🎉</div>
   </div>
 
-  <!-- Step 1 -->
+  <!-- Step 1: Hotel Name -->
   <div class="card">
     <div class="card-title">🏷️ Step 1 — Type the Hotel Name</div>
     <div class="hotel-field">
       <input type="text" id="hotelName" placeholder="e.g. Grand Hyatt Dubai">
-      <div class="name-preview">📁 Files will be saved as: <span id="namePreview">grand_hyatt_dubai_640x460_1.webp</span></div>
+      <div class="name-preview">📁 Files will be saved as: <span id="namePreview">grand_hyatt_dubai_640x460_1.jpg</span></div>
     </div>
   </div>
 
-  <!-- Step 2 -->
-  <div class="card">
-    <div class="card-title">📐 Step 2 — Choose Image Size</div>
-    <div class="size-grid">
-      <div class="size-field">
-        <label>↔️ Width (px)</label>
-        <input type="number" id="widthInput" value="640" min="1" max="5000">
+  <!-- Step 2: Size (WebP only) -->
+  <div class="size-section hidden" id="sizeSection">
+    <div class="card">
+      <div class="card-title">📐 Step 2 — Choose Image Size</div>
+      <div class="size-grid">
+        <div class="size-field">
+          <label>↔️ Width (px)</label>
+          <input type="number" id="widthInput" value="640" min="1" max="5000">
+        </div>
+        <div class="size-field">
+          <label>↕️ Height (px)</label>
+          <input type="number" id="heightInput" value="460" min="1" max="5000">
+        </div>
       </div>
-      <div class="size-field">
-        <label>↕️ Height (px)</label>
-        <input type="number" id="heightInput" value="460" min="1" max="5000">
+      <div class="preset-row">
+        <button class="preset-btn" onclick="setSize(640,460)">📱 640×460</button>
+        <button class="preset-btn" onclick="setSize(1024,683)">🖥️ 1024×683</button>
       </div>
-    </div>
-    <div class="preset-row">
-      <button class="preset-btn" onclick="setSize(640,460)">📱 640×460</button>
-      <button class="preset-btn" onclick="setSize(1024,683)">🖥️ 1024×683</button>
     </div>
   </div>
 
-  <!-- Step 3 -->
+  <!-- Step 2 JPEG info -->
+  <div class="card" id="jpegInfoCard" style="display:none;">
+    <div class="card-title">📷 What will happen to your photos?</div>
+    <div class="jpeg-info">
+      ✅ JPG files → Just renamed with hotel name + number
+      <span>No conversion needed — already JPEG!</span>
+      🔄 PNG files → Converted to JPG + renamed
+      <span>PNG will become a proper JPEG file automatically.</span>
+    </div>
+  </div>
+
+  <!-- Step 3: Upload -->
   <div class="card">
-    <div class="card-title">🖼️ Step 3 — Upload Hotel Photos</div>
+    <div class="card-title" id="uploadStepLabel">🖼️ Step 3 — Upload Hotel Photos</div>
     <div class="dropzone" id="dropzone">
       <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,image/jpeg,image/png">
       <span class="drop-emoji">📂</span>
       <div class="drop-title">Click here to pick photos!</div>
-      <div class="drop-sub">Or drag & drop them here 👆<br>Supports JPG and PNG only</div>
+      <div class="drop-sub" id="dropSub">Or drag & drop them here 👆<br>Supports JPG and PNG</div>
     </div>
   </div>
 
@@ -217,33 +221,32 @@
   <div class="reorder-section" id="reorderSection">
     <div class="reorder-card">
       <div class="reorder-title">🔀 Step 4 — Arrange Your Photos</div>
-      <div class="reorder-sub">Drag the photos to put them in the right order. The number shows the final file name order.</div>
+      <div class="reorder-sub">Drag the photos to put them in the right order. Numbers show final file name order.</div>
       <div class="reorder-grid" id="reorderGrid"></div>
-      <div class="reorder-hint">✋ Drag photos to reorder them • ❌ Tap the pink button to remove</div>
+      <div class="reorder-hint">✋ Drag photos to reorder • ❌ Pink button to remove</div>
     </div>
   </div>
 
-  <!-- Hidden quality -->
   <input type="hidden" id="qualityInput" value="0.85">
 
   <!-- Convert Button -->
-  <button class="convert-btn" id="convertBtn" onclick="convertAll()">✨ Convert All Photos to WebP!</button>
+  <button class="convert-btn jpeg-mode" id="convertBtn" onclick="processAll()">📷 Rename All Photos!</button>
 
   <!-- Progress -->
   <div class="progress-section" id="progressSection">
     <div class="progress-card">
       <span class="progress-emoji">⚙️</span>
-      <div style="font-size:16px; font-weight:800; color:#2d2d2d;">Converting your photos...</div>
-      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div style="font-size:16px; font-weight:800; color:#2d2d2d;" id="progressTitle">Processing your photos...</div>
+      <div class="progress-bar-wrap"><div class="progress-bar jpeg-mode" id="progressBar"></div></div>
       <div class="progress-text" id="progressText">Starting...</div>
     </div>
   </div>
 
   <!-- Results -->
   <div class="results-section" id="resultsSection">
-    <div class="success-banner">🎉 All done! Your photos are ready to download!</div>
+    <div class="success-banner jpeg-mode" id="successBanner">🎉 All done! Your photos are ready!</div>
     <div id="resultsList"></div>
-    <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">📦 Download All as ZIP</button>
+    <button class="download-all-btn jpeg-mode" id="downloadAllBtn" onclick="downloadAll()">📦 Download All as ZIP</button>
   </div>
 
 </div>
@@ -251,17 +254,66 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  let files = [];
-  let converted = [];
+  let files = [], converted = [], previewUrls = [];
   let sortable = null;
-  let previewUrls = []; // store URLs separately so they don't get lost
+  let currentMode = 'jpeg'; // 'webp' or 'jpeg'
 
-  // Name preview
+  // ── MODE SWITCHING ──────────────────────────────────────
+  function setMode(mode) {
+    currentMode = mode;
+    const isWebp = mode === 'webp';
+
+    document.getElementById('btnWebp').className = 'mode-btn' + (isWebp ? ' active-webp' : '');
+    document.getElementById('btnJpeg').className = 'mode-btn' + (!isWebp ? ' active-jpeg' : '');
+
+    document.getElementById('sizeSection').classList.toggle('hidden', !isWebp);
+    document.getElementById('jpegInfoCard').style.display = isWebp ? 'none' : 'block';
+
+    // Steps bar
+    const steps = document.getElementById('stepsBar');
+    if (isWebp) {
+      steps.innerHTML = `
+        <div class="step"><div class="step-num" style="background:#ff6b9d">1</div> Hotel Name</div>
+        <div class="step"><div class="step-num" style="background:#ffa35c">2</div> Pick Size</div>
+        <div class="step"><div class="step-num" style="background:#7c6fef">3</div> Upload Photos</div>
+        <div class="step"><div class="step-num" style="background:#4ecdc4">4</div> Arrange Order</div>
+        <div class="step"><div class="step-num" style="background:#f5a623">5</div> Download! 🎉</div>`;
+    } else {
+      steps.innerHTML = `
+        <div class="step"><div class="step-num" style="background:#ff6b9d">1</div> Hotel Name</div>
+        <div class="step"><div class="step-num" style="background:#7c6fef">2</div> Upload Photos</div>
+        <div class="step"><div class="step-num" style="background:#4ecdc4">3</div> Arrange Order</div>
+        <div class="step"><div class="step-num" style="background:#f5a623">4</div> Download! 🎉</div>`;
+    }
+
+    document.getElementById('uploadStepLabel').textContent = isWebp ? '🖼️ Step 3 — Upload Hotel Photos' : '📷 Step 2 — Upload Hotel Photos';
+    document.getElementById('dropSub').innerHTML = isWebp
+      ? 'Or drag & drop them here 👆<br>Supports JPG and PNG only'
+      : 'Or drag & drop them here 👆<br>Supports JPG and PNG';
+
+    const btn = document.getElementById('convertBtn');
+    btn.className = `convert-btn ${isWebp ? 'webp-mode' : 'jpeg-mode'}${files.length ? ' visible' : ''}`;
+    btn.textContent = isWebp
+      ? `✨ Convert ${files.length} Photo${files.length !== 1 ? 's' : ''} to WebP!`
+      : `📷 Rename ${files.length} Photo${files.length !== 1 ? 's' : ''}!`;
+
+    document.getElementById('progressBar').className = `progress-bar ${isWebp ? 'webp-mode' : 'jpeg-mode'}`;
+    document.getElementById('successBanner').className = `success-banner ${isWebp ? 'webp-mode' : 'jpeg-mode'}`;
+    document.getElementById('downloadAllBtn').className = `download-all-btn ${isWebp ? 'webp-mode' : 'jpeg-mode'}`;
+
+    updateNamePreview();
+    document.getElementById('resultsSection').classList.remove('visible');
+    document.getElementById('progressSection').classList.remove('visible');
+  }
+
+  // ── NAME PREVIEW ────────────────────────────────────────
   function updateNamePreview() {
-    const hotel = getHotelName();
+    const hotel = getHotelName() || 'grand_hyatt_dubai';
     const w = document.getElementById('widthInput').value || '640';
     const h = document.getElementById('heightInput').value || '460';
-    document.getElementById('namePreview').textContent = `${hotel}_${w}x${h}_1.webp`;
+    const ext = currentMode === 'webp' ? 'webp' : 'jpg';
+    const sizeStr = currentMode === 'webp' ? `_${w}x${h}` : '';
+    document.getElementById('namePreview').textContent = `${hotel}${sizeStr}_1.${ext}`;
   }
 
   function getHotelName() {
@@ -273,7 +325,7 @@
   document.getElementById('widthInput').addEventListener('input', updateNamePreview);
   document.getElementById('heightInput').addEventListener('input', updateNamePreview);
 
-  // Upload
+  // ── FILE UPLOAD ─────────────────────────────────────────
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
 
@@ -286,11 +338,7 @@
   fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
 
   function addFiles(newFiles) {
-    const validFiles = newFiles.filter(f => f.type === 'image/jpeg' || f.type === 'image/png');
-    validFiles.forEach(f => {
-      files.push(f);
-      previewUrls.push(URL.createObjectURL(f));
-    });
+    newFiles.forEach(f => { files.push(f); previewUrls.push(URL.createObjectURL(f)); });
     renderReorderGrid();
   }
 
@@ -302,14 +350,11 @@
     renderReorderGrid();
   }
 
-  // Sync files array order from current DOM order
   function syncOrderFromDOM() {
-    const grid = document.getElementById('reorderGrid');
-    const items = Array.from(grid.querySelectorAll('.reorder-item'));
-    const newFiles = items.map(item => files[parseInt(item.dataset.index)]);
-    const newUrls = items.map(item => previewUrls[parseInt(item.dataset.index)]);
-    files = newFiles;
-    previewUrls = newUrls;
+    const items = Array.from(document.getElementById('reorderGrid').querySelectorAll('.reorder-item'));
+    const nf = items.map(item => files[parseInt(item.dataset.index)]);
+    const nu = items.map(item => previewUrls[parseInt(item.dataset.index)]);
+    files = nf; previewUrls = nu;
   }
 
   function renderReorderGrid() {
@@ -318,39 +363,35 @@
     const btn = document.getElementById('convertBtn');
 
     if (files.length === 0) {
-      section.classList.remove('visible');
-      btn.classList.remove('visible');
-      return;
+      section.classList.remove('visible'); btn.classList.remove('visible'); return;
     }
-
-    section.classList.add('visible');
-    btn.classList.add('visible');
+    section.classList.add('visible'); btn.classList.add('visible');
 
     grid.innerHTML = files.map((f, i) => {
+      const isJpg = f.type === 'image/jpeg';
+      const typeLabel = isJpg ? 'jpg' : 'png';
       return `
         <div class="reorder-item" data-index="${i}">
           <img src="${previewUrls[i]}" alt="${f.name}">
           <div class="reorder-badge">${i + 1}</div>
           <div class="drag-handle">⠿</div>
+          <div class="type-badge ${typeLabel}">${typeLabel.toUpperCase()}</div>
           <button class="remove-btn" onclick="removeFile(${i})">×</button>
           <div class="reorder-item-name">${f.name}</div>
-        </div>
-      `;
+        </div>`;
     }).join('');
 
-    // Init or refresh Sortable
-    if (sortable) { sortable.destroy(); }
+    if (sortable) sortable.destroy();
     sortable = new Sortable(grid, {
-      animation: 200,
-      ghostClass: 'sortable-ghost',
-      chosenClass: 'sortable-chosen',
-      onEnd: () => {
-        syncOrderFromDOM();
-        renderReorderGrid();
-      }
+      animation: 200, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+      onEnd: () => { syncOrderFromDOM(); renderReorderGrid(); }
     });
 
-    btn.textContent = `✨ Convert ${files.length} Photo${files.length > 1 ? 's' : ''} to WebP!`;
+    const isWebp = currentMode === 'webp';
+    btn.className = `convert-btn ${isWebp ? 'webp-mode' : 'jpeg-mode'} visible`;
+    btn.textContent = isWebp
+      ? `✨ Convert ${files.length} Photo${files.length !== 1 ? 's' : ''} to WebP!`
+      : `📷 Rename ${files.length} Photo${files.length !== 1 ? 's' : ''}!`;
   }
 
   function setSize(w, h) {
@@ -359,48 +400,24 @@
     updateNamePreview();
   }
 
-  async function convertAll() {
+  // ── MAIN PROCESS ────────────────────────────────────────
+  async function processAll() {
     if (files.length === 0) return;
+    if (!document.getElementById('hotelName').value.trim()) { alert('⚠️ Please type the hotel name first!'); return; }
 
-    const width = parseInt(document.getElementById('widthInput').value);
-    const height = parseInt(document.getElementById('heightInput').value);
-    const quality = parseFloat(document.getElementById('qualityInput').value);
-    const hotelName = getHotelName();
-
-    if (!document.getElementById('hotelName').value.trim()) {
-      alert('⚠️ Please type the hotel name first!'); return;
-    }
-    if (!width || !height || width < 1 || height < 1) {
-      alert('⚠️ Please enter a valid width and height!'); return;
-    }
-
-    // Sync final order from DOM before converting
     syncOrderFromDOM();
-
     converted = [];
+
+    const hotelName = getHotelName();
     document.getElementById('progressSection').classList.add('visible');
     document.getElementById('resultsSection').classList.remove('visible');
     document.getElementById('convertBtn').disabled = true;
+    document.getElementById('resultsList').innerHTML = '';
 
-    const resultsList = document.getElementById('resultsList');
-    resultsList.innerHTML = '';
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
-      document.getElementById('progressText').textContent = `Photo ${i + 1} of ${files.length} — almost there! 🚀`;
-      try {
-        const fileName = `${hotelName}_${width}x${height}_${i + 1}.webp`;
-        const result = await convertImage(file, width, height, quality, fileName);
-        converted.push(result);
-        const originalKB = (file.size / 1024).toFixed(0);
-        const newKB = (result.blob.size / 1024).toFixed(0);
-        const saved = Math.round((1 - result.blob.size / file.size) * 100);
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `<div class="result-info"><div class="result-name">📄 ${result.name}</div><div class="result-meta">${width}×${height}px &nbsp;·&nbsp; ${originalKB}KB → ${newKB}KB &nbsp;·&nbsp; <span class="saved">${saved > 0 ? '↓ ' + saved + '% smaller 🎉' : '✅ converted'}</span></div></div><button class="dl-btn" onclick="downloadSingle(${converted.length - 1})">⬇ Save</button>`;
-        resultsList.appendChild(card);
-      } catch (err) { console.error('Error:', err); }
+    if (currentMode === 'webp') {
+      await processWebp(hotelName);
+    } else {
+      await processJpeg(hotelName);
     }
 
     document.getElementById('progressBar').style.width = '100%';
@@ -409,7 +426,73 @@
     document.getElementById('convertBtn').disabled = false;
   }
 
-  function convertImage(file, width, height, quality, fileName) {
+  // WebP mode — resize + convert
+  async function processWebp(hotelName) {
+    const width = parseInt(document.getElementById('widthInput').value);
+    const height = parseInt(document.getElementById('heightInput').value);
+    const quality = parseFloat(document.getElementById('qualityInput').value);
+    if (!width || !height) { alert('⚠️ Please enter a valid size!'); return; }
+
+    document.getElementById('progressTitle').textContent = 'Converting to WebP...';
+
+    for (let i = 0; i < files.length; i++) {
+      document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
+      document.getElementById('progressText').textContent = `Photo ${i + 1} of ${files.length} 🚀`;
+
+      const fileName = `${hotelName}_${width}x${height}_${i + 1}.webp`;
+      const blob = await convertToWebp(files[i], width, height, quality);
+      converted.push({ name: fileName, blob });
+
+      const origKB = (files[i].size / 1024).toFixed(0);
+      const newKB = (blob.size / 1024).toFixed(0);
+      const saved = Math.round((1 - blob.size / files[i].size) * 100);
+      addResultCard(fileName, `${width}×${height}px · ${origKB}KB → ${newKB}KB`, `↓ ${saved}% smaller`, 'converted', converted.length - 1);
+    }
+  }
+
+  // JPEG mode — rename JPG, convert PNG→JPG
+  async function processJpeg(hotelName) {
+    document.getElementById('progressTitle').textContent = 'Renaming photos...';
+
+    for (let i = 0; i < files.length; i++) {
+      document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
+      document.getElementById('progressText').textContent = `Photo ${i + 1} of ${files.length} 🚀`;
+
+      const file = files[i];
+      const isJpg = file.type === 'image/jpeg';
+      const fileName = `${hotelName}_${i + 1}.jpg`;
+      let blob;
+
+      if (isJpg) {
+        // Just rename — same bytes
+        blob = new Blob([await file.arrayBuffer()], { type: 'image/jpeg' });
+        addResultCard(fileName, `Original JPG · ${(file.size / 1024).toFixed(0)}KB`, '✅ Renamed only', 'renamed', converted.length);
+      } else {
+        // PNG → convert to JPG via canvas
+        blob = await convertToJpeg(file);
+        const origKB = (file.size / 1024).toFixed(0);
+        const newKB = (blob.size / 1024).toFixed(0);
+        addResultCard(fileName, `PNG → JPG · ${origKB}KB → ${newKB}KB`, '🔄 Converted to JPG', 'converted', converted.length);
+      }
+
+      converted.push({ name: fileName, blob });
+    }
+  }
+
+  function addResultCard(name, meta, tag, tagClass, index) {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="result-info">
+        <div class="result-name">📄 ${name}</div>
+        <div class="result-meta">${meta} &nbsp;·&nbsp; <span class="tag ${tagClass}">${tag}</span></div>
+      </div>
+      <button class="dl-btn" onclick="downloadSingle(${index})">⬇ Save</button>`;
+    document.getElementById('resultsList').appendChild(card);
+  }
+
+  // Canvas: WebP conversion
+  function convertToWebp(file, width, height, quality) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       const url = URL.createObjectURL(file);
@@ -417,17 +500,33 @@
         const canvas = document.createElement('canvas');
         canvas.width = width; canvas.height = height;
         const ctx = canvas.getContext('2d');
-        const srcRatio = img.width / img.height;
-        const dstRatio = width / height;
+        const sr = img.width / img.height, dr = width / height;
         let sx = 0, sy = 0, sw = img.width, sh = img.height;
-        if (srcRatio > dstRatio) { sw = img.height * dstRatio; sx = (img.width - sw) / 2; }
-        else { sh = img.width / dstRatio; sy = (img.height - sh) / 2; }
+        if (sr > dr) { sw = img.height * dr; sx = (img.width - sw) / 2; }
+        else { sh = img.width / dr; sy = (img.height - sh) / 2; }
         ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
         URL.revokeObjectURL(url);
-        canvas.toBlob(blob => {
-          if (!blob) return reject(new Error('Failed'));
-          resolve({ name: fileName, blob });
-        }, 'image/webp', quality);
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Failed')), 'image/webp', quality);
+      };
+      img.onerror = reject; img.src = url;
+    });
+  }
+
+  // Canvas: PNG → JPEG conversion
+  function convertToJpeg(file) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        // Fill white background (JPEG has no transparency)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Failed')), 'image/jpeg', 0.92);
       };
       img.onerror = reject; img.src = url;
     });
@@ -448,15 +547,17 @@
     btn.disabled = true;
     const zip = new JSZip();
     converted.forEach(({ name, blob }) => zip.file(name, blob));
-    const hotelName = getHotelName();
     const zipBlob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(zipBlob);
     const a = document.createElement('a');
-    a.href = url; a.download = `${hotelName}-photos.zip`; a.click();
+    a.href = url; a.download = `${getHotelName()}-photos.zip`; a.click();
     URL.revokeObjectURL(url);
     btn.textContent = '📦 Download All as ZIP';
     btn.disabled = false;
   }
+
+  // Init
+  setMode('jpeg');
 </script>
 </body>
 </html>
