@@ -199,10 +199,10 @@
   <div class="card" id="jpegInfoCard" style="display:none;">
     <div class="card-title">📷 What will happen to your photos?</div>
     <div class="jpeg-info">
-      ✅ JPG files → Just renamed with hotel name + number
-      <span>No conversion needed — already JPEG!</span>
-      🔄 PNG files → Converted to JPG + renamed
-      <span>PNG will become a proper JPEG file automatically.</span>
+      ✅ JPG files → Resized + renamed to hotel name + number
+      <span>Same quality, just the right size and name!</span>
+      🔄 PNG files → Resized + converted to JPG + renamed
+      <span>PNG becomes a proper JPEG at the chosen size.</span>
     </div>
   </div>
 
@@ -266,7 +266,7 @@
     document.getElementById('btnWebp').className = 'mode-btn' + (isWebp ? ' active-webp' : '');
     document.getElementById('btnJpeg').className = 'mode-btn' + (!isWebp ? ' active-jpeg' : '');
 
-    document.getElementById('sizeSection').classList.toggle('hidden', !isWebp);
+    document.getElementById('sizeSection').classList.remove('hidden');
     document.getElementById('jpegInfoCard').style.display = isWebp ? 'none' : 'block';
 
     // Steps bar
@@ -312,7 +312,7 @@
     const w = document.getElementById('widthInput').value || '640';
     const h = document.getElementById('heightInput').value || '460';
     const ext = currentMode === 'webp' ? 'webp' : 'jpg';
-    const sizeStr = currentMode === 'webp' ? `_${w}x${h}` : '';
+    const sizeStr = `_${w}x${h}`;
     document.getElementById('namePreview').textContent = `${hotel}${sizeStr}_1.${ext}`;
   }
 
@@ -450,9 +450,13 @@
     }
   }
 
-  // JPEG mode — rename JPG, convert PNG→JPG
+  // JPEG mode — resize + rename JPG, resize + convert PNG→JPG
   async function processJpeg(hotelName) {
-    document.getElementById('progressTitle').textContent = 'Renaming photos...';
+    const width = parseInt(document.getElementById('widthInput').value);
+    const height = parseInt(document.getElementById('heightInput').value);
+    if (!width || !height) { alert('⚠️ Please enter a valid size!'); return; }
+
+    document.getElementById('progressTitle').textContent = 'Resizing & renaming photos...';
 
     for (let i = 0; i < files.length; i++) {
       document.getElementById('progressBar').style.width = Math.round((i / files.length) * 100) + '%';
@@ -460,19 +464,15 @@
 
       const file = files[i];
       const isJpg = file.type === 'image/jpeg';
-      const fileName = `${hotelName}_${i + 1}.jpg`;
-      let blob;
+      const fileName = `${hotelName}_${width}x${height}_${i + 1}.jpg`;
+      const blob = await resizeToJpeg(file, width, height);
+      const origKB = (file.size / 1024).toFixed(0);
+      const newKB = (blob.size / 1024).toFixed(0);
 
       if (isJpg) {
-        // Just rename — same bytes
-        blob = new Blob([await file.arrayBuffer()], { type: 'image/jpeg' });
-        addResultCard(fileName, `Original JPG · ${(file.size / 1024).toFixed(0)}KB`, '✅ Renamed only', 'renamed', converted.length);
+        addResultCard(fileName, `${width}×${height}px · ${origKB}KB → ${newKB}KB`, '✅ Resized & Renamed', 'renamed', converted.length);
       } else {
-        // PNG → convert to JPG via canvas
-        blob = await convertToJpeg(file);
-        const origKB = (file.size / 1024).toFixed(0);
-        const newKB = (blob.size / 1024).toFixed(0);
-        addResultCard(fileName, `PNG → JPG · ${origKB}KB → ${newKB}KB`, '🔄 Converted to JPG', 'converted', converted.length);
+        addResultCard(fileName, `PNG → JPG · ${width}×${height}px · ${origKB}KB → ${newKB}KB`, '🔄 Converted & Resized', 'converted', converted.length);
       }
 
       converted.push({ name: fileName, blob });
@@ -512,7 +512,7 @@
     });
   }
 
-  // Canvas: PNG → JPEG conversion
+  // Canvas: PNG → JPEG conversion (original size)
   function convertToJpeg(file) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -521,10 +521,33 @@
         const canvas = document.createElement('canvas');
         canvas.width = img.width; canvas.height = img.height;
         const ctx = canvas.getContext('2d');
-        // Fill white background (JPEG has no transparency)
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Failed')), 'image/jpeg', 0.92);
+      };
+      img.onerror = reject; img.src = url;
+    });
+  }
+
+  // Canvas: Resize + output as JPEG (works for both JPG and PNG input)
+  function resizeToJpeg(file, width, height) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        // White background for PNG transparency
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        const sr = img.width / img.height, dr = width / height;
+        let sx = 0, sy = 0, sw = img.width, sh = img.height;
+        if (sr > dr) { sw = img.height * dr; sx = (img.width - sw) / 2; }
+        else { sh = img.width / dr; sy = (img.height - sh) / 2; }
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
         URL.revokeObjectURL(url);
         canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Failed')), 'image/jpeg', 0.92);
       };
